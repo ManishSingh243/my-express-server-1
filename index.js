@@ -4,15 +4,14 @@ const bodyParser = require("body-parser")
 const app = express()
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.get("/add-product", (req, res)=>{
-    res.sendFile(__dirname+"/addProduct.html")
-})
+const adminRoutes = require("./routes/admin")
+const shopRoutes  = require("./routes/shop")
 
-app.post("/", (req, res)=>{
-    var name = (req.body.productName);
-    var size = (req.body.productSize);
+app.use(adminRoutes)
+app.use(shopRoutes)
 
-   console.log("Product name is:-"+ name+ "product size is:-" + size)
+app.use((req, res, next) => {
+  res.status(404).send("<h1>Page Not Found</h1>")
 })
 
 app.listen(3000)
